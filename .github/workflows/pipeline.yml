@@ -1,0 +1,36 @@
+name: build_main
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code for deployment
+      uses: actions/checkout@v3
+      
+    - name: deploy using rsync
+      uses: burnett01/rsync-deployments@master
+      with:
+        switches: -avzr --delete 
+        path: ./
+        remote_path: /var/www/pujan
+        remote_host: ${{ secrets.HOST }}
+        remote_user: ${{ secrets.USERNAME }}
+        remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+  
+    - name: restart nginx
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+            cd /home
+            sudo systemctl reload nginx
