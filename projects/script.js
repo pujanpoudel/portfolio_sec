@@ -19,14 +19,9 @@ $(document).ready(function () {
 
 document.addEventListener('visibilitychange',
     function () {
-        if (document.visibilityState === "visible") {
-            document.title = "Projects | Portfolio Jigar Sable";
+        (document.visibilityState === "visible")
+            document.title = "Projects | Portfolio Pujan Poudel";
             $("#favicon").attr("href", "/assets/images/favicon.png");
-        }
-        else {
-            document.title = "Come Back To Portfolio";
-            $("#favicon").attr("href", "/assets/images/favhand.png");
-        }
     });
 
 
