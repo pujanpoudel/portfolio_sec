@@ -21,7 +21,7 @@ pipeline {
                     {
                         def path = '/var/www/html/pujan'
                         sh """
-                                scp -i \$SSH_KEY_PATH -P \$SSH_PORT -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./ \${SERVER_USER}@\${SERVER_HOST}:${path}
+                            scp -i \$SSH_KEY_PATH -P \$SSH_PORT -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null * \${SERVER_USER}@\${SERVER_HOST}:${path}
                         """
                     }
                 }
