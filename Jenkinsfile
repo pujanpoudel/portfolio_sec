@@ -36,7 +36,7 @@ pipeline {
                 body: """<p>The build was successful.</p>
                 <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
                 <p>Branch: ${env.BRANCH_NAME}</p>""",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
             )
         }
         failure {
@@ -46,7 +46,7 @@ pipeline {
                 <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
                 <p>Branch: ${env.BRANCH_NAME}</p>
                 <p>Please check the console output for more details.</p>""",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
             )
         }
         always {
