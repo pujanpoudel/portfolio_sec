@@ -30,17 +30,27 @@ pipeline {
     }
     
     post {
-        always {
-            // Clean up workspace
-            cleanWs()
-        }
-        
         success {
-            echo 'Deployment completed successfully!'
+            emailext (
+                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Success",
+                body: """<p>The build was successful.</p>
+                <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
+                <p>Branch: ${env.BRANCH_NAME}</p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            )
         }
-        
         failure {
-            echo 'Deployment failed. Please check the logs.'
+            emailext (
+                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
+                body: """<p>The build failed.</p>
+                <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
+                <p>Branch: ${env.BRANCH_NAME}</p>
+                <p>Please check the console output for more details.</p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            )
+        }
+        always {
+            cleanWs()
         }
     }
 }
