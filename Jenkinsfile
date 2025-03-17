@@ -19,6 +19,12 @@ pipeline {
                         string(credentialsId: 'SERVER_PORT', variable: 'SSH_PORT')
                     ]) 
                     {
+                       
+                        committerEmail = sh (
+                            script: 'git --no-pager show -s --format=\'%ae\'',
+                            returnStdout: true
+                        ).trim()
+                        echo "Committer Email: ${committerEmail}"
                         def path = '/var/www/html/pujan'
                         sh """
                             scp -i \$SSH_KEY_PATH -P \$SSH_PORT -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null * \${SERVER_USER}@\${SERVER_HOST}:${path} && ssh -i \$SSH_KEY_PATH -p \$SSH_PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \${SERVER_USER}@\${SERVER_HOST} "sudo systemctl reload nginx"
@@ -36,7 +42,8 @@ pipeline {
                 body: """<p>The build was successful.</p>
                 <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
                 <p>Branch: ${env.BRANCH_NAME}</p>""",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                to: "${committerEmail}"
+
             )
         }
         failure {
@@ -46,7 +53,7 @@ pipeline {
                 <p>Build URL: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
                 <p>Branch: ${env.BRANCH_NAME}</p>
                 <p>Please check the console output for more details.</p>""",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                to: "${committerEmail}"
             )
         }
         always {
