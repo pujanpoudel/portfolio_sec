@@ -9,12 +9,12 @@
     }
   },
   {
-    "name": "Django Ecommerce App",
-    "desc": "This project is an online shopping website built using Django framework.",
-    "image": "",
-    "category": "Web",
+    "name": "Flutter and Django Ecommerce App",
+    "desc": "This project is an online shopping website built using Flutter and Django framework.",
+    "image": "flutter",
+    "category": "Mobile App",
     "links": {
-      "code": "https://github.com/pujanpoudel/Django-Ecommerse"
+      "code": "https://github.com/pujanpoudel/flutter_ecommerse"
     }
   }
   
